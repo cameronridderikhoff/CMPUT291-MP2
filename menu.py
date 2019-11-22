@@ -75,24 +75,30 @@ class menu:
             to_who = ""
             cc = ""
             bcc = ""
+            subj_or_body = []
             for item in query:
                 if next_item == "d":
                     date = item
+                    next_item = "" #reset next_item
                 elif next_item =="s":
                     subject = item
+                    next_item = ""
                 elif next_item == "b":
                     body = item
+                    next_item = ""
                 elif next_item == "f":
                     from_who = item
+                    next_item = ""
                 elif next_item == "t":
                     to_who = item
+                    next_item = ""
                 elif next_item == "c":
                     cc = item
+                    next_item = ""
                 elif next_item == "bc":
                     bcc = item
-                next_item = "" #reset next_item
-
-                if "date:" in item or "date>" in item or "date<" in item:
+                    next_item = ""
+                elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
                     date_operator = item.split("date")
                 elif "subj:" in item or "subject:" in item:
@@ -108,10 +114,12 @@ class menu:
                 elif "bcc:" in item:
                     next_item = "bc"
                 else:
-                    if next_item == "":
-                        print("You have mistyped your query, please try again.")
-                        break
+                    if item != "":
+                        subj_or_body.append(item)
+            #call query methods here!!
+            call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
             print(date, subject, body, from_who, to_who, cc, bcc)
+            print(subj_or_body)
             i = input("Please enter your query, or press 'e' to exit: ")
 
 
