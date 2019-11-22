@@ -61,8 +61,6 @@ class menu:
                             query.append(q[j].split("<")[1])
                         else:
                             query.append(q[j])
-            #TODO remove
-            print(query)
 
             #used to let the system know what the next item will be
             next_item = ""
@@ -118,8 +116,6 @@ class menu:
                         subj_or_body.append(item)
             #call query methods here!!
             call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
-            print(date, subject, body, from_who, to_who, cc, bcc)
-            print(subj_or_body)
             i = input("Please enter your query, or press 'e' to exit: ")
 
 
