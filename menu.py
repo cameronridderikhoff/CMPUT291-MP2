@@ -110,10 +110,10 @@ class menu:
                     next_item = "f"
                 elif "to:" in item:
                     next_item = "t"
-                elif "cc:" in item:
-                    next_item = "c"
                 elif "bcc:" in item:
                     next_item = "bc"
+                elif "cc:" in item:
+                    next_item = "c"
                 else:
                     if item != "":
                         subj_or_body.append(item)
