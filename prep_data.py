@@ -156,48 +156,34 @@ class prep_data:
             word = ""
             words = []
             while char != "<":
-                while re.match("[0-9a-zA-Z_-]", char):
+                if re.match("[0-9a-zA-Z_-]", char):
                     word = word + char
                     i += 1
                     char = line_split[1][i]
-                # ignore terms of length <= 2, such as "if", "or", and "by"
-                if len(word) > 2:
-                    words.append(word)
-                word = ""
 
-                #this means we have a special character that we need to TODO ignore or replace?
+                #this means we have a special character that we need to ignore
                 if re.match("[&]", char):
                     special = ""
                     while not re.match("[;]", char):
                         i += 1
-                        char = line_split[1][i] 
+                        char = line_split[1][i]
                         special = special + char
-                    save = True
-                    if "#" in special:
-                        #it is a number, ignore it
-                        save = False
-                    elif "lt" in special:
-                        special = "<"
-                    elif "gt" in special:
-                        special = ">"
-                    elif "amp" in special:
-                        special = "&"
-                    elif "apos" in special:
-                        special = "'"
-                    elif "quot" in special:
-                        special = "\""
-                    else:
-                        raise (ValueError("The input file is incorrect, there is a special term that is not &lt;, &gt;, &amp;, &apos;, &quot; or &#number;."))
-                    #TODO remove if we are supposed to ignore the special chars
-                    if save:
-                        words.append(special)
-                else:
-                    #sometimes the character will be one ahead of the checks, so we need to make sure the program
-                    # is able to check if char == "<" and break out of the loop, otherwise, we may add
-                    # "subj" or "body" to our terms file
-                    if char != "<":
-                        i += 1
-                        char = line_split[1][i]                   
+                    #make sure it is not a number, which we simply ignore
+                    if not "#" in special:
+                        if (len(word) <= 2):
+                            word = ""
+                # ignore terms of length <= 2, such as "if", "or", and "by"
+                if len(word) > 2 and not re.match("[0-9a-zA-Z_-]", char):
+                    words.append(word)
+                    word = ""
+                # if the term is of length <= 2 and we have reached a space, remove this term from 
+                # the "word" variable
+                elif len(word) <= 2 and re.match("[ :]", char):
+                    word = ""
+                # we do the re.match() check to ensure we aren't skipping any important characters
+                if not re.match("[0-9a-zA-Z<_-]", char):
+                    i += 1
+                    char = line_split[1][i] 
         else:
             # if the "</split_factor>" tag exists, then we know the data file is fine, but there is no data in this record
             # under this split_factor, so we return None
