@@ -1,3 +1,4 @@
+import yuhang5
 class menu:
     def __init__(self):
         self.star = "*************************"
@@ -121,9 +122,14 @@ class menu:
             i = input("Please enter your query, or press 'e' to exit: ")
 
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body):
-        #print(body)
-        pass
+        yuhang5.get_emails_from(from_who)
+        yuhang5.get_emial_cc(bcc)
+        yuhang5.get_emails_with_date(date,date_operator)
+        yuhang5.get_email_with_body(body)
+        
 
 if __name__ == "__main__":
     m = menu()
     m.main_menu()
+
+
