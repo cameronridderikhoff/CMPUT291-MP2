@@ -72,8 +72,8 @@ class menu:
             body = ""
             from_who = ""
             to_who = ""
-            cc = ""
-            bcc = ""
+            cc = []
+            bcc = []
             subj_or_body = []
             for item in query:
                 if item == "":
@@ -94,10 +94,10 @@ class menu:
                     to_who = item
                     next_item = ""
                 elif next_item == "c":
-                    cc = item
+                    cc.append(item)
                     next_item = ""
                 elif next_item == "bc":
-                    bcc = item
+                    bcc.append(item)
                     next_item = ""
                 elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
