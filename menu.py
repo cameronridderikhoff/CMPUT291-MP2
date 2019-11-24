@@ -68,10 +68,10 @@ class menu:
 
             date = ""
             date_operator = ""
-            subject = ""
-            body = ""
             from_who = ""
-            to_who = ""
+            subject = []
+            body = []
+            to_who = []
             cc = []
             bcc = []
             subj_or_body = []
@@ -82,16 +82,16 @@ class menu:
                     date = item
                     next_item = "" #reset next_item
                 elif next_item =="s":
-                    subject = item
+                    subject.append(item)
                     next_item = ""
                 elif next_item == "b":
-                    body = item
+                    body.append(item)
                     next_item = ""
                 elif next_item == "f":
                     from_who = item
                     next_item = ""
                 elif next_item == "t":
-                    to_who = item
+                    to_who.append(item)
                     next_item = ""
                 elif next_item == "c":
                     cc.append(item)
