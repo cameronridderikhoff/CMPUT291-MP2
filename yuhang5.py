@@ -111,7 +111,25 @@ def get_email_with_body(body):
                 print(bod[2:],"|",b_id)
         result = cur.next()  
     cur.close()
-    database.close()         
+    database.close()   
+    
+def get_email_with_subject(subject):
+    database = db.DB()
+    database.open("te.idx")
+    cur = database.cursor()
+    result = cur.first() 
+    subject_id = []
+    while result:
+        sub=result[0].decode("utf-8")
+        ids=result[1].decode("utf-8")
+        if ( "s-" in sub):
+            if (sub[2:] == subject ):
+                s_id=ids
+                subject_id.append(s_id)
+                print(sub[2:],"|",s_id)
+        result = cur.next()  
+    cur.close()
+    database.close()        
     
     
     

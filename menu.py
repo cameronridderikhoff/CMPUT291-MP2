@@ -126,7 +126,7 @@ class menu:
         yuhang5.get_emial_cc(bcc)
         yuhang5.get_emails_with_date(date,date_operator)
         yuhang5.get_email_with_body(body)
-        
+        yuhang5.get_email_with_subject(subject)
 
 if __name__ == "__main__":
     m = menu()
