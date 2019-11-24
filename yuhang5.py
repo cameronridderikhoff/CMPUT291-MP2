@@ -1,30 +1,8 @@
 from bsddb3 import db
-import datetime 
 import sys
 import menu 
-import time
 
-def get_emails_from(email):
-    database = db.DB()
-    database.open("em.idx") 
-    cur = database.cursor()
-    result = cur.first()
-    email_id = []
-    while result:
-        em=result[0].decode("utf-8")
-        ids=result[1].decode("utf-8")
 
-        if ("from-" in em):
-            if (em[5:] == email):
-                e_id=ids
-                email_id.append(e_id)
-                print(em[5:],"|",e_id)
-                email_id.append(e_id)
-        result = cur.next()
-    
-    cur.close()
-    database.close() 
-    
 
 
 def get_emails_with_date(date, date_operator):
@@ -69,31 +47,7 @@ def get_emails_with_date(date, date_operator):
     cur.close()
     database.close() 
 
-def get_emial_cc(email):
-    database = db.DB()
-    database.open("em.idx") 
-    cur = database.cursor()
-    result = cur.first()
-    #em=result[0].decode("utf-8")
-    #print(em)
-    cc_id = []
-    while result:
-        em=result[0].decode("utf-8")
-        ids=result[1].decode("utf-8")
-        #print(em)
-        #print(ids)
-        if ("cc-" in em):
-            if (em[4:] == email):
-                #print(em)
-                e_id=ids
-                #print(e_id)
-                cc_id.append(e_id)
-                print(em[4:],"|",e_id)
-        result = cur.next()
-    
-        #print(em)
-    cur.close()
-    database.close() 
+
     
 def get_email_with_body(body):
     database = db.DB()
@@ -113,7 +67,7 @@ def get_email_with_body(body):
     cur.close()
     database.close()   
     
-def get_email_with_subject(subject):
+def get_email_with_subject(subjects):
     database = db.DB()
     database.open("te.idx")
     cur = database.cursor()
@@ -123,7 +77,7 @@ def get_email_with_subject(subject):
         sub=result[0].decode("utf-8")
         ids=result[1].decode("utf-8")
         if ( "s-" in sub):
-            if (sub[2:] == subject ):
+            if (sub[2:] in subjects ):
                 s_id=ids
                 subject_id.append(s_id)
                 print(sub[2:],"|",s_id)

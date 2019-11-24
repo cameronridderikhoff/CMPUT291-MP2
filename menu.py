@@ -69,12 +69,12 @@ class menu:
 
             date = ""
             date_operator = ""
-            subject = ""
-            body = ""
             from_who = ""
-            to_who = ""
-            cc = ""
-            bcc = ""
+            subject = []
+            body = []
+            to_who = []
+            cc = []
+            bcc = []
             subj_or_body = []
             for item in query:
                 if item == "":
@@ -83,22 +83,22 @@ class menu:
                     date = item
                     next_item = "" #reset next_item
                 elif next_item =="s":
-                    subject = item
+                    subject.append(item)
                     next_item = ""
                 elif next_item == "b":
-                    body = item
+                    body.append(item)
                     next_item = ""
                 elif next_item == "f":
                     from_who = item
                     next_item = ""
                 elif next_item == "t":
-                    to_who = item
+                    to_who.append(item)
                     next_item = ""
                 elif next_item == "c":
-                    cc = item
+                    cc.append(item)
                     next_item = ""
                 elif next_item == "bc":
-                    bcc = item
+                    bcc.append(item)
                     next_item = ""
                 elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
@@ -120,10 +120,9 @@ class menu:
             #call query methods here!!
             self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
             i = input("Please enter your query, or press 'e' to exit: ")
-
+  
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body):
-        yuhang5.get_emails_from(from_who)
-        yuhang5.get_emial_cc(bcc)
+        
         yuhang5.get_emails_with_date(date,date_operator)
         yuhang5.get_email_with_body(body)
         yuhang5.get_email_with_subject(subject)
@@ -131,5 +130,3 @@ class menu:
 if __name__ == "__main__":
     m = menu()
     m.main_menu()
-
-
