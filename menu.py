@@ -25,22 +25,23 @@ class menu:
                     #check to see if the first character is a symbol, if it is, we need to append the symbol to the previous entry
                     #and remove it from the current entry
                     if q[j][0] == ":":
-                        query.pop()
                         query.append(q[j-1] + ":")
                         q[j] = q[j][1:]
                     elif q[j][0] == "<":
                         if  q[j][1] == "=":
                             q[j] = q[j][2:]
+                            query.append(q[j-1] + "<=")
                         else:
-                            q[j] = q[j][1:]
-                        query.pop()
-                        query.append(q[j-1] + ":")
-                        
+                            q[j] = q[j][1:] 
+                            query.append(q[j-1] + "<")
                     elif q[j][0] == ">":
                         if q[j][1] == "=":
                             q[j] = q[j][2:]
+                            query.append(q[j-1] + ">=")
                         else:
                             q[j] = q[j][1:]
+                            query.append(q[j-1] + ">")
+
                     #split the : using commands by their colon, and the <, >, >=, <= commands (date) by that character
                     if not (q[j] == "date" or q[j] == "subj" or q[j] == "body" or q[j] == "from" or q[j] == "to" or q[j] == "cc" or q[j] == "bcc"):
                         if len(q[j].split(":")) > 1:
@@ -61,8 +62,6 @@ class menu:
                             query.append(q[j].split("<")[1])
                         else:
                             query.append(q[j])
-            #TODO remove
-            print(query)
 
             #used to let the system know what the next item will be
             next_item = ""
@@ -75,26 +74,34 @@ class menu:
             to_who = ""
             cc = ""
             bcc = ""
+            subj_or_body = []
             for item in query:
+                if item == "":
+                    continue
                 if next_item == "d":
                     date = item
+                    next_item = "" #reset next_item
                 elif next_item =="s":
                     subject = item
+                    next_item = ""
                 elif next_item == "b":
                     body = item
+                    next_item = ""
                 elif next_item == "f":
                     from_who = item
+                    next_item = ""
                 elif next_item == "t":
                     to_who = item
+                    next_item = ""
                 elif next_item == "c":
                     cc = item
+                    next_item = ""
                 elif next_item == "bc":
                     bcc = item
-                next_item = "" #reset next_item
-
-                if "date:" in item or "date>" in item or "date<" in item:
+                    next_item = ""
+                elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
-                    date_operator = item.split("date")
+                    date_operator = item.split("date")[1]
                 elif "subj:" in item or "subject:" in item:
                     next_item = "s"
                 elif "body:" in item:
@@ -103,18 +110,19 @@ class menu:
                     next_item = "f"
                 elif "to:" in item:
                     next_item = "t"
-                elif "cc:" in item:
-                    next_item = "c"
                 elif "bcc:" in item:
                     next_item = "bc"
+                elif "cc:" in item:
+                    next_item = "c"
                 else:
-                    if next_item == "":
-                        print("You have mistyped your query, please try again.")
-                        break
-            print(date, subject, body, from_who, to_who, cc, bcc)
+                    subj_or_body.append(item)
+            #call query methods here!!
+            self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
             i = input("Please enter your query, or press 'e' to exit: ")
 
-
+    def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body):
+        #print(body)
+        pass
 
 if __name__ == "__main__":
     m = menu()

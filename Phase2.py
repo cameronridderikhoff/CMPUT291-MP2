@@ -20,7 +20,7 @@ def sort():
     os.system('perl break.pl <emails.txt > emails_temp.txt')
     os.system('perl break.pl <recs.txt > recs_temp.txt')
     os.system('perl break.pl <terms.txt > terms_temp.txt')  
-    os.system('perl break.pl <dates.txt > dates_otemp.txt')  
+    os.system('perl break.pl <dates.txt > dates_temp.txt')  
     
     
 #The mv command is a command similar to cp, but it is not a copy of a file or directory. 
@@ -35,11 +35,16 @@ def dbload():
     os.system("db_load -c duplicates=1 -T -t btree -f emails.txt em.idx")
     os.system("db_load -c duplicates=1 -T -t btree -f dates.txt da.idx")
     os.system("db_load -c duplicates=1 -T -t hash -f recs.txt re.idx")
-    
+   
     os.system("rm emails_temp.txt")
     os.system("rm recs_temp.txt ")
     os.system("rm dates_temp.txt ")
-    os.system("rm terms_temp.txt ")      
+    os.system("rm terms_temp.txt ")
+
+
+#os.system("db_dump -p da.idx")
+#os.system("db_dump -p em.idx")
+#os.system("db_dump -p te.idx")
     
 
 
