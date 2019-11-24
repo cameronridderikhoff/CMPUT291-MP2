@@ -9,9 +9,7 @@ def get_emails_with_date(date, date_operator):
     database = db.DB()    
     database.open("da.idx") 
     cur = database.cursor()
-    result = cur.first()
-    #da=result[0].decode("utf-8")
-    #print(da)    
+    result = cur.first()   
     date_id = []    
 
     while result:
@@ -59,7 +57,7 @@ def get_email_with_body(body):
         bod=result[0].decode("utf-8")
         ids=result[1].decode("utf-8")
         if ( "b-" in bod):
-            if (bod[2:] == body ):
+            if (bod[2:] in body ):
                 b_id=ids
                 cody_id.append(b_id)
                 print(bod[2:],"|",b_id)
