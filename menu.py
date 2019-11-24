@@ -1,6 +1,5 @@
-import bsddb3
-
-
+import yuhang5
+import wstix
 class menu:
     def __init__(self):
         self.star = "*************************"
@@ -28,22 +27,23 @@ class menu:
                     #check to see if the first character is a symbol, if it is, we need to append the symbol to the previous entry
                     #and remove it from the current entry
                     if q[j][0] == ":":
-                        query.pop()
                         query.append(q[j-1] + ":")
                         q[j] = q[j][1:]
                     elif q[j][0] == "<":
                         if  q[j][1] == "=":
                             q[j] = q[j][2:]
+                            query.append(q[j-1] + "<=")
                         else:
-                            q[j] = q[j][1:]
-                        query.pop()
-                        query.append(q[j-1] + ":")
-                        
+                            q[j] = q[j][1:] 
+                            query.append(q[j-1] + "<")
                     elif q[j][0] == ">":
                         if q[j][1] == "=":
                             q[j] = q[j][2:]
+                            query.append(q[j-1] + ">=")
                         else:
                             q[j] = q[j][1:]
+                            query.append(q[j-1] + ">")
+
                     #split the : using commands by their colon, and the <, >, >=, <= commands (date) by that character
                     if not (q[j] == "date" or q[j] == "subj" or q[j] == "body" or q[j] == "from" or q[j] == "to" or q[j] == "cc" or q[j] == "bcc"):
                         if len(q[j].split(":")) > 1:
@@ -76,8 +76,11 @@ class menu:
             to_who = ""
             cc = ""
             bcc = ""
+            size = ""
             subj_or_body = []
             for item in query:
+                if item == "":
+                    continue
                 if next_item == "d":
                     date = item
                     next_item = "" #reset next_item
@@ -101,7 +104,7 @@ class menu:
                     next_item = ""
                 elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
-                    date_operator = item.split("date")
+                    date_operator = item.split("date")[1]
                 elif "subj:" in item or "subject:" in item:
                     next_item = "s"
                 elif "body:" in item:
@@ -115,13 +118,20 @@ class menu:
                 elif "cc:" in item:
                     next_item = "c"
                 else:
-                    if item != "":
-                        subj_or_body.append(item)
+                    subj_or_body.append(item)
             #call query methods here!!
-            call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
+            self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size)
             i = input("Please enter your query, or press 'e' to exit: ")
 
-
+    def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
+        wstix.get_emails_with_email(to_who, "to")
+        test = wstix.get_emails_with_email(from_who, "from")
+        wstix.get_emails_with_email(cc, "cc")
+        wstix.get_emails_with_email(bcc, "bcc")
+        yuhang5.get_emails_with_date(date,date_operator)
+        yuhang5.get_email_with_body(body)
+        [wstix.show_rec(i, "brief") for i in test]
+        
 
 if __name__ == "__main__":
     m = menu()
