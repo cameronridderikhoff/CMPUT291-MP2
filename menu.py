@@ -1,3 +1,4 @@
+import cameron_queries
 class menu:
     def __init__(self):
         self.star = "*************************"
@@ -132,7 +133,8 @@ class menu:
             i = input("Please enter your query: ")
 
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
-        pass
+        print(cameron_queries.get_emails_with_body(body))
+        print(cameron_queries.get_emails_with_subject(subject))
 
 if __name__ == "__main__":
     m = menu()
