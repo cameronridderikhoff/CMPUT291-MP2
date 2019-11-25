@@ -1,6 +1,7 @@
 import re
 class prep_data:
-    # This function does the "menu" portion of this program, allowing the user to prepare as many files as they would like
+    # This function does the "menu" portion of this program, allowing the user
+    # to prepare as many files as they would like
     def main(self):
         while True:
             print("Press 'e' at any time to exit this program.")
@@ -9,7 +10,8 @@ class prep_data:
                 return
             self.parse_xml(file_name)
 
-    # This function does the actual parsing of the xml file, and creates 4 new files with the parsed data:
+    # This function does the actual parsing of the xml file, and creates 4 new
+    # files with the parsed data:
     # terms.txt, emails.txt, dates.txt, recs.txt
     def parse_xml(self, xml_file):
         #try:
@@ -28,18 +30,19 @@ class prep_data:
                         i += 1
                         # Get the row number of this record by
                         # splitting the line "<mail><row>532</row><date>..." into ["<mail>", "532</row><date>"]
-                        # and get the integers 5, 3, 2 and set the row variable to that set of integers.
+                        # and get the integers 5, 3, 2 and set the row variable
+                        # to that set of integers.
                         row = self.parse_data_single(line, "row")
                         # Add the full record to recs.txt
                         recs.write(row + ":" + line)
 
-                        #This print is strictly for the user to know how far into the dataset we are
+                        # This print is strictly for the user to know how far
+                        # into the dataset we are
                         print("Current row: " + str(i))
 
 
                         # Get the date of this record by splitting the line 
-                        # "<mail><row>532</row><date>2000/09/13</date>..." into 
-                        # ["<mail><row>532</row>", "2000/09/13</date>"]
+                        # "<mail><row>532</row><date>2000/09/13</date>..." into ["<mail><row>532</row>", "2000/09/13</date>"]
                         # and get the characters 2, 0, 0, 0, /, 0 ,9, /, 1, 3 
                         # and save them in the dates file
                         date = self.parse_data_single(line, "date")
@@ -51,7 +54,8 @@ class prep_data:
                         # into ["<mail>...", "david.delainey@enron.com</to>..."] to get the "to" field
                         # into ["<mail>...", "</cc>..."] to get the cc field
                         # into ["<mail>...", "</bcc>..."] to get the bcc field
-                        # get the characters that comprise the email addresses and save them in the emails file
+                        # get the characters that comprise the email addresses
+                        # and save them in the emails file
                         addresses = self.parse_data_single(line, "from")
                         emails.write("from-" + addresses.lower() + ":" + row + "\n")
 
@@ -93,8 +97,9 @@ class prep_data:
     # split_factor is the tag we want to split the line by
     def parse_data_single(self, line, split_factor):
         line_split = line.split("<" + split_factor + ">")
-        # Checks that "<split_factor>" appears in the line, should always go into this if statement
-        # if we dont, then that means that there may be no data in the "<split_factor>" tag
+        # Checks that "<split_factor>" appears in the line, should always go
+        # into this if statement
+        # if we dont, then that means that there may be no data in the"<split_factor>" tag
         if len(line_split) > 1: 
             word = ""
             i=0
@@ -104,12 +109,14 @@ class prep_data:
                 i += 1
                 char = line_split[1][i]
         else:
-            # if the "</split_factor>" tag exists, then we know the data file is fine, but there is no data in this record
+            # if the "</split_factor>" tag exists, then we know the data file is
+            # fine, but there is no data in this record
             # under this split_factor, so we return None
             if len(line.split("</" + split_factor)) > 1:
                 return None
             else:
-                # This means that the "</split_factor>" tag does not exist, so the data file is formatted incorrectly
+                # This means that the "</split_factor>" tag does not exist, so
+                # the data file is formatted incorrectly
                 raise(ValueError("The input file is incorrect."))
         return word
     
@@ -118,7 +125,7 @@ class prep_data:
     # line is the line we are currently parsing
     # split_factor is the tag we want to split the line by
     def parse_data_multiple(self, line, split_factor):
-        line_split = line.split("<" + split_factor + ">")        # Checks that "<split_factor>" appears in the line, should always go into this if statement
+        line_split = line.split("<" + split_factor + ">")  # Checks that "<split_factor>" appears in the line, should always go into this if statement
         # if we dont, then that means that there may be no data in the "<split_factor>" tag
         if len(line_split) > 1: 
             i=0
@@ -137,12 +144,14 @@ class prep_data:
                 words.append(word)
                 
         else:
-            # if the "</split_factor>" tag exists, then we know the data file is fine, but there is no data in this record
+            # if the "</split_factor>" tag exists, then we know the data file is
+            # fine, but there is no data in this record
             # under this split_factor, so we return None
             if len(line.split("</" + split_factor)) > 1:
                 return None
             else:
-                # This means that the "</split_factor>" tag does not exist, so the data file is formatted incorrectly
+                # This means that the "</split_factor>" tag does not exist, so
+                # the data file is formatted incorrectly
                 raise(ValueError("The input file is incorrect."))
         return words
 
@@ -179,21 +188,24 @@ class prep_data:
                 if len(word) > 2 and not re.match("[0-9a-zA-Z_-]", char):
                     words.append(word)
                     word = ""
-                # if the term is of length <= 2 and we have reached a space, remove this term from 
-                # the "word" variable
+                # if the term is of length <= 2 and we have reached a space,
+                # remove this term from the "word" variable
                 elif len(word) <= 2 and not re.match("[0-9a-zA-Z<_-]", char):
                     word = ""
-                # we do the re.match() check to ensure we aren't skipping any important characters
+                # we do the re.match() check to ensure we aren't skipping any
+                # important characters
                 if not re.match("[0-9a-zA-Z<_-]", char):
                     i += 1
                     char = line_split[1][i] 
         else:
-            # if the "</split_factor>" tag exists, then we know the data file is fine, but there is no data in this record
-            # under this split_factor, so we return None
+            # if the "</split_factor>" tag exists, then we know the data file is
+            # fine, but there is no data in this record under this split_factor,
+            # so we return None
             if len(line.split("</" + split_factor)) > 1:
                 return None
             else:
-                # This means that the "</split_factor>" tag does not exist, so the data file is formatted incorrectly
+                # This means that the "</split_factor>" tag does not exist, so
+                # the data file is formatted incorrectly
                 raise(ValueError("The input file is incorrect."))
         return words
 if __name__ == "__main__":

@@ -6,8 +6,8 @@ class menu:
         super().__init__()
     
     # This method controls the users queries to the database index files.
-    # It interacts with the user to get their queries, and converts the plain text input into a 
-    # format useable by the methods we are producing.
+    # It interacts with the user to get their queries, and converts the plain
+    # text input into a format useable by the methods we are producing.
     # Possible query entries: date, subject, body, from, to, cc and bcc
     def main_menu(self):
         print(self.star)
@@ -31,8 +31,9 @@ class menu:
                     if q[j] == ":" or q[j] == ">" or q[j] == "<" or q[j] == ">=" or q[j] == "<=":
                         query.append(q[j-1] + q[j])
                     else:
-                        #check to see if the first character is a symbol, if it is, we need to append the symbol to the previous entry
-                        #and remove it from the current entry
+                        # check to see if the first character is a symbol, if it
+                        # is, we need to append the symbol to the previous entry
+                        # and remove it from the current entry
                         if q[j][0] == ":":
                             query.append(q[j-1] + ":")
                             q[j] = q[j][1:]
@@ -51,12 +52,15 @@ class menu:
                                 q[j] = q[j][1:]
                                 query.append(q[j-1] + ">")
 
-                        #split the : using commands by their colon, and the <, >, >=, <= commands (date) by that character
+                        # split the : using commands by their colon, and the <,
+                        # >, >=, <= commands (date) by that character
                         if not (q[j] == "date" or q[j] == "subj" or q[j] == "body" or q[j] == "from" or q[j] == "to" or q[j] == "cc" or q[j] == "bcc"):
                             if len(q[j].split(":")) > 1:
                                 query.append(q[j].split(":")[0] + ":")
                                 query.append(q[j].split(":")[1])
-                            #must check ">=" and "<=" first, since they will also have a result of len() > 1 if we split them on ">" or "<"
+                            # must check ">=" and "<=" first, since they will
+                            # also have a result of len() > 1 if we split them
+                            # on ">" or "<"
                             elif len(q[j].split(">=")) > 1:
                                 query.append(q[j].split(">=")[0] + ">=")
                                 query.append(q[j].split(">=")[1])
@@ -126,16 +130,19 @@ class menu:
                     else:
                         subj_or_body.append(item)
                 #call query methods here!!
-                self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, self.size)
+                self.call_query(date, date_operator, subject, body, from_who,
+                                to_who, cc, bcc, subj_or_body, self.size)
             print(self.star)
             print("Press e to exit.")
             print("Enter output=full to see full record.")
             print("Enter output=brief to see just the id and title.")
             i = input("Please enter your query: ")
 
-    def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
+    def call_query(self, date, date_operator, subject, body, from_who, to_who,
+                   cc, bcc, subj_or_body, size):
 
-        match = {"date":set(), "from":set(), "to":set(), "cc":set(), "bcc":set(), "subj":set(), "body":set(), "term":set()}
+        match = {"date":set(), "from":set(), "to":set(), "cc":set(),
+                 "bcc":set(), "subj":set(), "body":set(), "term":set()}
 
         if date:
             [match["date"].add(record) for record in queries.get_emails_with_date(date, date_operator)]
@@ -160,8 +167,10 @@ class menu:
         if body:
             match["body"] = set(queries.get_emails_with_terms(body, "b"))
         if subj_or_body:
-            # sets emails to all the rows where the terms in subj_or_body are in the subject or the body fields
-            emails = [set(queries.get_emails_with_terms(subj_or_body, "b")), set(queries.get_emails_with_terms(subj_or_body, "s"))]
+            # sets emails to all the rows where the terms in subj_or_body are in
+            # the subject or the body fields
+            emails = [set(queries.get_emails_with_terms(subj_or_body, "b")),
+                      set(queries.get_emails_with_terms(subj_or_body, "s"))]
             if emails:
                 match["term"] = set.union(*emails)
 
