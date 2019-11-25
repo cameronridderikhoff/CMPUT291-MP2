@@ -8,8 +8,8 @@ def get_emails_with_email(email, field):
     email_id = []
 
     while result:
-        em=result[0].decode("utf-8")
-        ids=result[1].decode("utf-8")
+        em=result[0].decode()
+        ids=result[1].decode()
         if (field + "-" in em):
             if (em[len(field)+1:] == email):
                 e_id = ids
@@ -31,3 +31,4 @@ def show_rec(row, size):
     else:
         # Prints record in full
         print(record)
+    database.close()
