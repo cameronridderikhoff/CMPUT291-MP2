@@ -130,16 +130,18 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#Start of my .gitignore, NOT from https://github.com/github/gitignore/blob/master/Python.gitignore
+# Start of my .gitignore, NOT from https://github.com/github/gitignore/blob/master/Python.gitignore
 # XMl files
 *.xml
 
-#Text files
+# Text files and word files
 *.txt
+!README.txt
+*.tmp
 
-#idx files
+# Index files
 *.idx
 
-#VS Code
+# VS Code
 .DS_Store
-.vscode
+.vscode/
