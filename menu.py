@@ -1,5 +1,6 @@
 import yuhang5
 import wstix
+import cameron_queries
 class menu:
     def __init__(self):
         self.star = "*************************"
@@ -111,7 +112,7 @@ class menu:
                 elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
                     date_operator = item.split("date")[1]
-                elif "subj:" in item or "subject:" in item:
+                elif "subj:" in item:
                     next_item = "s"
                 elif "body:" in item:
                     next_item = "b"
