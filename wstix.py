@@ -1,5 +1,9 @@
 from bsddb3 import db
 
+# field is the option for "from-", "cc-", "bcc-", "to-"
+# Using range search to get check does the input email which is plus to field and encode in our database.
+# If it in, get the row_id and append it to email_id list
+
 def get_emails_with_email(email, field):
     database = db.DB()
     database.open("em.idx") 
