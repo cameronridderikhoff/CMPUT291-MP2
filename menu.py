@@ -136,12 +136,13 @@ class menu:
 
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
         wstix.get_emails_with_email(to_who, "to")
-        test = wstix.get_emails_with_email(from_who, "from")
+        wstix.get_emails_with_email(from_who, "from")
         wstix.get_emails_with_email(cc, "cc")
         wstix.get_emails_with_email(bcc, "bcc")
         yuhang5.get_emails_with_date(date,date_operator)
         yuhang5.get_email_with_body(body)
-        [wstix.show_rec(i, "brief") for i in test]
+        test = cameron_queries.get_emails_with_body(body)
+        [wstix.show_rec(i, self.size) for i in test]
         
 
 if __name__ == "__main__":
