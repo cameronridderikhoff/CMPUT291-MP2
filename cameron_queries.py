@@ -1,22 +1,22 @@
 from bsddb3 import db
-def get_emails_with_body(bodies):
+def get_emails_with_terms(terms, field):
     database = db.DB() #handle for Berkeley DB database
     database.open("te.idx")
     cursor = database.cursor()
     row_ids = []
-    for body in bodies:
+    for term in terms:
         
-        if ("%" in body):#remove the %
-            body = body[:-1]
+        if ("%" in term):#remove the %
+            term = term[:-1]
             #do a range search of partial matches
-            key_val = cursor.get(b"b-" + body.encode(), flags=db.DB_SET_RANGE)
-            while ("b-" + body) in key_val[0].decode() and key_val != None:
+            key_val = cursor.get((field[0] + "-" + term).encode(), flags=db.DB_SET_RANGE)
+            while (field[0] + "-" + term) in key_val[0].decode() and key_val != None:
                 row_ids.append(key_val[1].decode())
                 key_val = cursor.next()
         else:
             #do a range search
-            key_val = cursor.get(b"b-" + body.encode(), flags=db.DB_SET_RANGE)
-            while ("b-" + body).encode() in key_val and key_val != None:
+            key_val = cursor.get((field[0] + "-" + term).encode(), flags=db.DB_SET_RANGE)
+            while (field[0] + "-" + term).encode() in key_val and key_val != None:
                 row_ids.append(key_val[1].decode())
                 key_val = cursor.next()
     cursor.close()
