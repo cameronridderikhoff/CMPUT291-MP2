@@ -43,6 +43,7 @@ def get_emails_with_email(email,field):
        database.close()              
        return email_id
 
+# Prints a record given the row id by accessing re.idx
 def show_rec(row, size):
     database = db.DB()
     database.open("re.idx")
