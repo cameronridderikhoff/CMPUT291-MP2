@@ -14,7 +14,6 @@ def get_emails_with_email(email, field):
             if (em[len(field)+1:] == email):
                 e_id = ids
                 email_id.append(e_id)
-                print(em[len(field)+1:],"|",e_id)
         result = cur.next()
     
     cur.close()

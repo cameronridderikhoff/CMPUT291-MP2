@@ -135,13 +135,41 @@ class menu:
             i = input("Please enter your query: ")
 
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
-        wstix.get_emails_with_email(to_who, "to")
-        wstix.get_emails_with_email(from_who, "from")
-        wstix.get_emails_with_email(cc, "cc")
-        wstix.get_emails_with_email(bcc, "bcc")
-        yuhang5.get_emails_with_date(date,date_operator)
-        test = cameron_queries.get_emails_with_terms(body, "body")
-        [wstix.show_rec(i, self.size) for i in test]
+
+        match = {"date":set(), "from":set(), "to":set(), "cc":set(), "bcc":set(), "subj":set(), "body":set(), "term":set()}
+
+        if date:
+            [match["date"].add(record) for record in yuhang5.get_emails_with_date(date, date_operator)]
+        if from_who:
+            [match["from"].add(record) for record in wstix.get_emails_with_email(from_who, "from")]
+        if to_who:
+            recipients = [set(wstix.get_emails_with_email(email, "to")) for email in to_who]
+            # Returns intersection of all row ids with given emails in "to" field
+            # set intersection from https://stackoverflow.com/a/2541814
+            match["to"] = set.intersection(*recipients)
+        if cc:
+            recipients = [set(wstix.get_emails_with_email(email, "cc")) for email in to_who]
+            match["cc"] = set.intersection(*recipients)
+        if bcc:
+            recipients = [set(wstix.get_emails_with_email(email, "bcc")) for email in to_who]
+            match["bcc"] = set.intersection(*recipients)
+        if subject:
+            match["subj"] = set(cameron_queries.get_emails_with_terms(subject, "s"))
+        if body:
+            match["body"] = set(cameron_queries.get_emails_with_terms(body, "b"))
+        if subj_or_body:
+            # sets emails to all the rows where the terms in subj_or_body are in the subject or the body fields
+            emails = [set(cameron_queries.get_emails_with_terms(subj_or_body, "b")), set(cameron_queries.get_emails_with_terms(subj_or_body, "s"))]
+            match["term"] = set.union(*emails)
+
+        row_ids = []
+        for key in match:
+            if match[key]:
+                row_ids.append(match[key])
+        row_ids = set.intersection(*row_ids)
+
+        for row in row_ids:
+            wstix.show_rec(row, size)
         
 
 if __name__ == "__main__":
