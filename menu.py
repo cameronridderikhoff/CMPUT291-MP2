@@ -109,7 +109,7 @@ class menu:
                 elif "date:" in item or "date>" in item or "date<" in item:
                     next_item = "d"
                     date_operator = item.split("date")[1]
-                elif "subj:" in item or "subject:" in item:
+                elif "subj:" in item:
                     next_item = "s"
                 elif "body:" in item:
                     next_item = "b"
@@ -132,7 +132,6 @@ class menu:
             i = input("Please enter your query: ")
 
     def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
-        #print(body)
         pass
 
 if __name__ == "__main__":
