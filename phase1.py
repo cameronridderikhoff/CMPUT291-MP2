@@ -21,15 +21,20 @@ class prep_data:
                 dates = open("dates.txt", 'w')
                 recs = open("recs.txt", 'w')
 
+                i=0 # for tracking how many emails we are creating records for
                 for line in file_object:
                     # check the split of <mail> to ensure we only add emails
                     if len(line.split("<mail>")) > 1:
+                        i += 1
                         # Get the row number of this record by
                         # splitting the line "<mail><row>532</row><date>..." into ["<mail>", "532</row><date>"]
                         # and get the integers 5, 3, 2 and set the row variable to that set of integers.
                         row = self.parse_data_single(line, "row")
                         # Add the full record to recs.txt
                         recs.write(row + ":" + line)
+
+                        #This print is strictly for the user to know how far into the dataset we are
+                        print("Current row: " + str(i))
 
 
                         # Get the date of this record by splitting the line 
@@ -126,8 +131,8 @@ class prep_data:
                     word = ""
                 else:
                     word = word + char
-                    i += 1
-                    char = line_split[1][i]
+                i += 1
+                char = line_split[1][i]
             if word != "":
                 words.append(word)
                 
@@ -168,17 +173,15 @@ class prep_data:
                         i += 1
                         char = line_split[1][i]
                         special = special + char
-                    #make sure it is not a number, which we simply ignore
-                    if not "#" in special:
-                        if (len(word) <= 2):
-                            word = ""
+                    if (len(word) <= 2):
+                        word = ""
                 # ignore terms of length <= 2, such as "if", "or", and "by"
                 if len(word) > 2 and not re.match("[0-9a-zA-Z_-]", char):
                     words.append(word)
                     word = ""
                 # if the term is of length <= 2 and we have reached a space, remove this term from 
                 # the "word" variable
-                elif len(word) <= 2 and re.match("[ :]", char):
+                elif len(word) <= 2 and not re.match("[0-9a-zA-Z<_-]", char):
                     word = ""
                 # we do the re.match() check to ensure we aren't skipping any important characters
                 if not re.match("[0-9a-zA-Z<_-]", char):
