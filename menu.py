@@ -1,4 +1,6 @@
 import cameron_queries
+import yuhang5
+import wstix
 class menu:
     def __init__(self):
         self.star = "*************************"
@@ -125,16 +127,26 @@ class menu:
                 else:
                     subj_or_body.append(item)
             #call query methods here!!
-            self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, self.size)
+            self.call_query(date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body)
             print(self.star)
             print("Press e to exit.")
             print("Enter output=full to see full record.")
             print("Enter output=brief to see just the id and title.")
             i = input("Please enter your query: ")
-
-    def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body, size):
-        print(cameron_queries.get_emails_with_body(body))
-        print(cameron_queries.get_emails_with_subject(subject))
+            i = input("Please enter your query, or press 'e' to exit: ")
+  
+    def call_query(self, date, date_operator, subject, body, from_who, to_who, cc, bcc, subj_or_body):
+       
+        test = wstix.get_emails_with_email(from_who,"from")
+        test2 = wstix.get_emails_with_email(from_who,"to")
+        test3 = wstix.get_emails_with_email(from_who,"cc")
+        test4 = wstix.get_emails_with_email(from_who,"bcc")       
+        test5= yuhang5.get_emails_with_date(date,date_operator)
+        [wstix.show_rec(i, "brief") for i in test]
+        [wstix.show_rec(i, "brief") for i in test2]
+        [wstix.show_rec(i, "brief") for i in test3]
+        [wstix.show_rec(i, "brief") for i in test4]
+        [wstix.show_rec(i, "brief") for i in test5]
 
 if __name__ == "__main__":
     m = menu()
