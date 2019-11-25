@@ -134,9 +134,10 @@ dmypy.json
 # XMl files
 *.xml
 
-# Text files
+# Text files and word files
 *.txt
 !README.txt
+*.tmp
 
 # Index files
 *.idx
